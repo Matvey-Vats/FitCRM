@@ -1,0 +1,30 @@
+.header {
+	margin: 50px 0 20px 0;
+	background-color: #fff;
+	color: #09122c;
+	padding: 50px;
+	border-radius: 10px;
+
+	.title {
+		font-size: 36px;
+		font-weight: 700;
+		margin-bottom: 20px;
+	}
+
+	.btn {
+		font-weight: 700;
+		font-size: 16px;
+		background-color: #09122c;
+		color: #fff;
+		border-radius: 10px;
+		padding: 5px 10px;
+		transition: all 0.3s ease;
+
+		&:hover {
+			transform: scale(0.95);
+		}
+		&:active {
+			transform: scale(0.9);
+		}
+	}
+}

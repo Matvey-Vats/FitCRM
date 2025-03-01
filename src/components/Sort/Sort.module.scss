@@ -1,0 +1,17 @@
+.block {
+	width: 100%;
+	max-width: 500px;
+	display: flex;
+	justify-content: flex-end;
+	.row {
+		display: flex;
+		align-items: center;
+		gap: 15px;
+	}
+
+	@media (max-width: 984px) {
+		margin: 0 auto;
+		align-items: center;
+		justify-content: center;
+	}
+}

@@ -1,0 +1,11 @@
+.btn {
+	font-size: 18px;
+	font-weight: 500;
+
+	&.active {
+		background-color: #fff;
+		color: #09122c;
+		border-radius: 10px;
+		padding: 5px 15px;
+	}
+}

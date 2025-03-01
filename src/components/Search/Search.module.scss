@@ -1,0 +1,32 @@
+.block {
+	max-width: 600px;
+	width: 100%;
+	.wrap {
+		display: flex;
+	}
+	.search {
+		position: relative;
+		&Icon {
+			position: absolute;
+			left: 5px;
+			top: 50%;
+			transform: translateY(-50%);
+			z-index: 100;
+		}
+
+		.closeIcon {
+			position: absolute;
+			right: 5px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		&Field {
+			max-width: 600px;
+			width: 100%;
+			border-radius: 10px;
+			padding: 10px 10px 10px 25px;
+
+			font-size: 18px;
+		}
+	}
+}
