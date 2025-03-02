@@ -1,0 +1,52 @@
+.item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	& + & {
+		margin-top: 20px;
+	}
+}
+
+.actions {
+	button {
+		border-radius: 7px;
+		padding: 5px 10px;
+		color: #fff;
+		font-weight: 700;
+		border: 1px solid transparent;
+	}
+	button + button {
+		margin-left: 10px;
+	}
+
+	.updateBtn {
+		background-color: orange;
+		transition: all 0.8s ease;
+
+		&:hover {
+			background-color: transparent;
+			border-color: orange;
+			color: orange;
+		}
+	}
+	.deleteBtn {
+		background-color: red;
+		transition: all 0.8s ease;
+
+		&:hover {
+			background-color: transparent;
+			border-color: red;
+			color: red;
+		}
+	}
+}
+
+.active {
+	color: rgb(74, 181, 74);
+	font-weight: 700;
+}
+
+.inactive {
+	color: red;
+}

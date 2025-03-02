@@ -4,6 +4,7 @@ import Header from '../../components/Header'
 import Search from '../../components/Search'
 import Sort from '../../components/Sort'
 
+import ClientsList from '../../components/ClientsList'
 import styles from './Home.module.scss'
 
 const Home: FC = () => {
@@ -15,7 +16,7 @@ const Home: FC = () => {
 				<Search />
 				<Sort />
 			</div>
-			<div>Home</div>
+			<ClientsList />
 		</>
 	)
 }

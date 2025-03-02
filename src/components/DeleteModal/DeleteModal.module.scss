@@ -1,0 +1,47 @@
+.modal {
+	max-width: 400px;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	position: relative;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	color: #09122c;
+	border: 1px solid #09122c;
+
+	&Content {
+		h3 {
+			font-weight: 700;
+			font-size: 22px;
+		}
+		svg {
+			margin-bottom: 5px;
+		}
+		p {
+			margin-bottom: 30px;
+		}
+	}
+
+	&Actions {
+		button {
+			font-weight: 700;
+			font-size: 16px;
+			color: #fff;
+			border-radius: 7px;
+			padding: 5px 10px;
+		}
+		button + button {
+			margin-left: 10px;
+		}
+
+		.deleteBtn {
+			background-color: red;
+		}
+
+		.cancelBtn {
+			color: #09122c;
+		}
+	}
+}

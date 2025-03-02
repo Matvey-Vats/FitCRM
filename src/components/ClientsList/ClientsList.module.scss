@@ -1,0 +1,27 @@
+.container {
+	background-color: #fff;
+	color: #09122c;
+	padding: 20px;
+	border-radius: 10px;
+	overflow-x: auto;
+
+	.table {
+		width: 100%;
+		border-collapse: collapse;
+		th,
+		td {
+			padding: 12px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+
+		th {
+			background-color: #f4f4f4;
+			font-weight: bold;
+		}
+
+		tbody tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+	}
+}

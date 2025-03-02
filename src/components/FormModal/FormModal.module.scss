@@ -1,0 +1,60 @@
+.modal {
+	max-width: 400px;
+	background-color: #fff;
+	border: 1px solid #09122c;
+	padding: 20px;
+	border-radius: 10px;
+	position: relative;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+
+	&Content {
+		text-align: center;
+		h3 {
+			color: #09122c;
+			font-weight: 700;
+			margin-bottom: 15px;
+		}
+		.closeBtn {
+			font-weight: 700;
+		}
+	}
+	&Form {
+		display: flex;
+		flex-direction: column;
+		row-gap: 10px;
+
+		input {
+			padding: 10px;
+			background-color: transparent;
+			color: #09122c;
+			border-bottom: 1px solid #09122c;
+			font-weight: 500;
+			font-size: 17px;
+
+			&::placeholder {
+				color: #09122c;
+			}
+		}
+		button {
+			background-color: #09122c;
+			color: #fff;
+			font-weight: 700;
+			border-radius: 10px;
+			padding: 5px 0;
+			margin-bottom: 40px;
+			transition: transform 0.3s ease;
+
+			&:hover {
+				transform: scale(0.98);
+			}
+			&:active {
+				transform: scale(0.95);
+			}
+		}
+	}
+	.closeBtn {
+		color: #09122c;
+	}
+}
