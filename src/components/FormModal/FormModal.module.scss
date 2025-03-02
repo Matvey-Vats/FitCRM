@@ -25,9 +25,23 @@
 		flex-direction: column;
 		row-gap: 10px;
 
+		.memberships {
+			border: 1px solid #09122c;
+			border-radius: 8px;
+			padding: 5px;
+			font-size: 16px;
+			font-weight: 500;
+		}
+
+		.status {
+			display: block;
+		}
+		label {
+			color: #09122c;
+		}
+
 		input {
 			padding: 10px;
-			background-color: transparent;
 			color: #09122c;
 			border-bottom: 1px solid #09122c;
 			font-weight: 500;
@@ -36,6 +50,15 @@
 			&::placeholder {
 				color: #09122c;
 			}
+		}
+
+		input[type='checkbox'] {
+			cursor: pointer;
+			width: auto;
+			height: auto;
+			appearance: auto;
+			-webkit-appearance: radio;
+			-moz-appearance: radio;
 		}
 		button {
 			background-color: #09122c;
@@ -57,4 +80,8 @@
 	.closeBtn {
 		color: #09122c;
 	}
+}
+
+.error {
+	color: red;
 }

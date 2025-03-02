@@ -1,16 +1,20 @@
 import { FC } from 'react'
 import { IoIosWarning } from 'react-icons/io'
 import Modal from 'react-modal'
+import { useClientStore } from '../../store/store'
 import styles from './DeleteModal.module.scss'
 
 Modal.setAppElement('#root')
 
 type DeleteModalTypes = {
+	id: number
 	isOpen: boolean
 	closeModal: () => void
 }
 
-const DeleteModal: FC<DeleteModalTypes> = ({ isOpen, closeModal }) => {
+const DeleteModal: FC<DeleteModalTypes> = ({ id, isOpen, closeModal }) => {
+	const { removeClient } = useClientStore()
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -25,7 +29,9 @@ const DeleteModal: FC<DeleteModalTypes> = ({ isOpen, closeModal }) => {
 					If you delete client data, you will no longer be able to get it back!
 				</p>
 				<div className={styles.modalActions}>
-					<button className={styles.deleteBtn}>Yes, i'm sure</button>
+					<button onClick={() => removeClient(id)} className={styles.deleteBtn}>
+						Yes, i'm sure
+					</button>
 					<button onClick={closeModal} className={styles.cancelBtn}>
 						No, cancel
 					</button>

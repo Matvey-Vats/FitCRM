@@ -1,9 +1,12 @@
 import clsx from 'clsx'
 import { FC, useState } from 'react'
+
+import { useClientStore } from '../../store/store'
 import styles from './ClientStats.module.scss'
 
 const ClientStats: FC = () => {
 	const [isOpen, setIsOpen] = useState(false)
+	const { total, totalActive, totalInactive } = useClientStore()
 
 	return (
 		<div className={styles.block}>
@@ -13,15 +16,15 @@ const ClientStats: FC = () => {
 			<div className={clsx(styles.wrapper, { [styles.open]: isOpen })}>
 				<div className={styles.item}>
 					<h3>Total clients</h3>
-					<p>10</p>
+					<p>{total ? total : 0}</p>
 				</div>
 				<div className={styles.item}>
 					<h3>Total clients active</h3>
-					<p>7</p>
+					<p>{totalActive ? totalActive : 0}</p>
 				</div>
 				<div className={styles.item}>
 					<h3>Total clients inactive</h3>
-					<p>3</p>
+					<p>{totalInactive ? totalInactive : 0}</p>
 				</div>
 			</div>
 		</div>
