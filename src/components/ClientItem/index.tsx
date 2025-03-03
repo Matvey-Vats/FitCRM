@@ -83,6 +83,7 @@ const ClientItem: FC<ClientItemProps> = ({
 				</td>
 			</tr>
 			<FormModal
+				client={{ id, name, email, phone, firstDay, subscription, status }}
 				isOpen={updateModalIsOpen}
 				closeModal={closeUpdateModal}
 				isUpdating={true}

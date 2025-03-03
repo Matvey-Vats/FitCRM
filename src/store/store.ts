@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { create } from 'zustand'
 
 export enum Membership {
@@ -121,13 +122,20 @@ export const useClientStore = create<ClientsStore>(set => ({
 				client.id === id ? { ...client, ...updatedClient } : client
 			)
 
-			const updatedActive = updatedClient.status
-				? state.totalActive + 1
-				: state.totalActive - 1
-			const updatedInactive = !updatedClient.status
-				? state.totalInactive + 1
-				: state.totalInactive - 1
+			const findClient = state.clients.find(client => client.id === id)
 
+			let updatedActive = state.totalActive
+			let updatedInactive = state.totalInactive
+
+			if (findClient && findClient.status !== updatedClient.status) {
+				if (updatedClient.status) {
+					updatedActive += 1
+					updatedInactive -= 1
+				} else {
+					updatedActive -= 1
+					updatedInactive += 1
+				}
+			}
 			localStorage.setItem('clients', JSON.stringify(updatedClients))
 			localStorage.setItem(
 				'clients_stats',
@@ -142,5 +150,66 @@ export const useClientStore = create<ClientsStore>(set => ({
 				totalActive: updatedActive,
 				totalInactive: updatedInactive,
 			}
+		}),
+}))
+
+interface ISort {
+	id: number
+	name: string
+}
+interface SearchStoreState {
+	searchValue: string
+	sort: ISort
+	filteredClients: IClient[]
+	setSearchValue: (value: string) => void
+	setSort: (value: ISort) => void
+	searchingClients: (clients: IClient[]) => void
+	searchingClientsBySort: (clients: IClient[]) => void
+}
+
+export const useSearchStore = create<SearchStoreState>(set => ({
+	searchValue: '',
+	sort: { id: 1, name: 'All' },
+	filteredClients: [],
+
+	setSearchValue: (value: string) =>
+		set({
+			searchValue: value,
+		}),
+
+	setSort: (value: ISort) =>
+		set({
+			sort: value,
+		}),
+
+	searchingClients: (clients: IClient[]) =>
+		set(state => {
+			const filtered = clients.filter(client =>
+				client.name.toLowerCase().includes(state.searchValue.toLowerCase())
+			)
+			return {
+				filteredClients: filtered.length ? filtered : clients,
+			}
+		}),
+	searchingClientsBySort: (clients: IClient[]) =>
+		set(state => {
+			let filtered: IClient[] = clients
+
+			if (state.sort.name === 'Active') {
+				filtered = clients.filter(client => client.status === true)
+			} else if (state.sort.name === 'Inactive') {
+				filtered = clients.filter(client => client.status === false)
+			} else if (state.sort.name === 'Will expire soon') {
+				filtered = clients.filter(client => {
+					const firstDay = dayjs(client.firstDay)
+					const expirationDay = firstDay.add(client.subscription, 'day')
+					const today = dayjs()
+					const daysLeft = expirationDay.diff(today, 'day')
+
+					return daysLeft > 0 && daysLeft <= 7
+				})
+			}
+
+			return { filteredClients: filtered.length ? filtered : clients }
 		}),
 }))

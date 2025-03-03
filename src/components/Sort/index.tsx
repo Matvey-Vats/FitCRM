@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { useSearchStore } from '../../store/store'
 import FilterButton from '../FilterButton'
 import styles from './Sort.module.scss'
 
@@ -6,9 +7,11 @@ const sortList = ['All', 'Active', 'Inactive', 'Will expire soon']
 
 const Sort: FC = () => {
 	const [isActive, setIsActive] = useState(0)
+	const setSort = useSearchStore(state => state.setSort)
 
 	const handleFilterClick = (index: number) => {
 		setIsActive(index)
+		setSort({ id: index, name: sortList[index] })
 	}
 
 	return (

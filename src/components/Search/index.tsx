@@ -1,20 +1,21 @@
-import { ChangeEvent, FC, useRef, useState } from 'react'
+import { ChangeEvent, FC, useRef } from 'react'
 import { BiSearch } from 'react-icons/bi'
 import { IoClose } from 'react-icons/io5'
+import { useSearchStore } from '../../store/store'
 import styles from './Search.module.scss'
 
 const Search: FC = () => {
-	const [value, setValue] = useState('')
+	const { searchValue, setSearchValue } = useSearchStore()
 	const inputRef = useRef<HTMLInputElement>(null)
 
 	const handleClearInput = () => {
-		setValue('')
+		setSearchValue('')
 
 		inputRef.current?.focus()
 	}
 
 	const handleChangeSearchValue = (e: ChangeEvent<HTMLInputElement>) => {
-		setValue(e.target.value)
+		setSearchValue(e.target.value)
 	}
 	return (
 		<div className={styles.block}>
@@ -22,13 +23,13 @@ const Search: FC = () => {
 				<BiSearch color='#09122c' className={styles.searchIcon} />
 				<input
 					ref={inputRef}
-					value={value}
+					value={searchValue}
 					onChange={handleChangeSearchValue}
 					type='text'
 					placeholder='Search...'
 					className={styles.searchField}
 				/>
-				{value && (
+				{searchValue && (
 					<IoClose
 						style={{ cursor: 'pointer' }}
 						onClick={handleClearInput}

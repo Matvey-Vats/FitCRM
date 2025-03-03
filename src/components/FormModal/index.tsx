@@ -1,19 +1,15 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import Modal from 'react-modal'
-import { Membership, useClientStore } from '../../store/store'
+import { IClient, Membership, useClientStore } from '../../store/store'
 import styles from './FormModal.module.scss'
 
 type FormModalTypes = {
+	client?: IClient
 	isOpen: boolean
 	closeModal: () => void
-	isUpdating: boolean
+	isUpdating?: boolean
 }
-
-// interface ISubscription {
-// 	value: number
-// 	label: string
-// }
 
 type FormInputsTypes = {
 	name: string
@@ -25,17 +21,43 @@ type FormInputsTypes = {
 
 Modal.setAppElement('#root')
 
-const FormModal: FC<FormModalTypes> = ({ isOpen, closeModal, isUpdating }) => {
-	const { memberships, clients, addClient } = useClientStore()
+const FormModal: FC<FormModalTypes> = ({
+	client,
+	isOpen,
+	closeModal,
+	isUpdating,
+}) => {
+	const { memberships, clients, addClient, updateClient } = useClientStore()
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		reset,
-	} = useForm<FormInputsTypes>()
+		setValue,
+	} = useForm<FormInputsTypes>({
+		defaultValues: {
+			name: '',
+			email: '',
+			phone: '',
+			subscription: Membership.MONTH,
+			status: false,
+		},
+	})
 
-	const onSubmit: SubmitHandler<FormInputsTypes> = data => {
+	useEffect(() => {
+		if (isUpdating && client) {
+			setValue('name', client.name)
+			setValue('email', client.email)
+			setValue('phone', client.phone)
+			setValue('subscription', client.subscription)
+			setValue('status', client.status)
+		} else {
+			reset()
+		}
+	}, [isUpdating, client, setValue, reset])
+
+	const createNewClientSubmit: SubmitHandler<FormInputsTypes> = data => {
 		addClient({
 			id: clients.length + 1,
 			firstDay: new Date().toLocaleDateString(),
@@ -43,6 +65,21 @@ const FormModal: FC<FormModalTypes> = ({ isOpen, closeModal, isUpdating }) => {
 			subscription: data.subscription as Membership,
 			status: !!data.status,
 		})
+
+		reset()
+		closeModal()
+	}
+
+	const updateClientSubmit: SubmitHandler<FormInputsTypes> = data => {
+		if (client) {
+			updateClient(client.id, {
+				id: client.id,
+				firstDay: client.firstDay,
+				...data,
+				subscription: data.subscription as Membership,
+				status: !!data.status,
+			})
+		}
 
 		reset()
 		closeModal()
@@ -57,25 +94,37 @@ const FormModal: FC<FormModalTypes> = ({ isOpen, closeModal, isUpdating }) => {
 		>
 			<div className={styles.modalContent}>
 				<h3>{isUpdating ? 'Update client data' : 'Add new client'}</h3>
-				<form onSubmit={handleSubmit(onSubmit)} className={styles.modalForm}>
+				<form
+					onSubmit={handleSubmit(
+						isUpdating ? updateClientSubmit : createNewClientSubmit
+					)}
+					className={styles.modalForm}
+				>
 					<input
 						type='text'
 						placeholder='Name'
 						{...register('name', { required: 'Name is required' })}
 					/>
-					{errors && <p className={styles.error}>{errors.name?.message}</p>}
+					{errors.name && <p className={styles.error}>{errors.name.message}</p>}
+
 					<input
 						type='email'
 						placeholder='Email'
 						{...register('email', { required: 'Email is required' })}
 					/>
-					{errors && <p className={styles.error}>{errors.email?.message}</p>}
+					{errors.email && (
+						<p className={styles.error}>{errors.email.message}</p>
+					)}
+
 					<input
 						type='text'
 						placeholder='Phone'
 						{...register('phone', { required: 'Phone is required' })}
 					/>
-					{errors && <p className={styles.error}>{errors.phone?.message}</p>}
+					{errors.phone && (
+						<p className={styles.error}>{errors.phone.message}</p>
+					)}
+
 					<select
 						className={styles.memberships}
 						{...register('subscription', { valueAsNumber: true })}
@@ -86,15 +135,16 @@ const FormModal: FC<FormModalTypes> = ({ isOpen, closeModal, isUpdating }) => {
 							</option>
 						))}
 					</select>
-					{errors && (
-						<p className={styles.error}>{errors.subscription?.message}</p>
+					{errors.subscription && (
+						<p className={styles.error}>{errors.subscription.message}</p>
 					)}
+
 					<label>
 						<input type='checkbox' {...register('status')} />
 						Active
 					</label>
 
-					<button>{isUpdating ? 'Update' : 'Add'}</button>
+					<button type='submit'>{isUpdating ? 'Update' : 'Add'}</button>
 				</form>
 				<button onClick={closeModal} className={styles.closeBtn}>
 					Close
